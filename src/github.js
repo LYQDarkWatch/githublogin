@@ -21,8 +21,8 @@ class Main extends React.Component{
         }
     }
     getData=()=>{
-        var api='https://api.github.com/search/repositories?q=stars:%3E=500&sort=stars&order=desc';
-        // var api='http://127.0.0.1:8087/about'       
+        // var api='https://api.github.com/search/repositories?q=stars:%3E=500&sort=stars&order=desc';
+        var api='http://127.0.0.1:8080/about'       
         axios.get(api).then((response)=> {
             this.setState({
                 list:response.data.items
