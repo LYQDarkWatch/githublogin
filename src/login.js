@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Input, Button } from 'semantic-ui-react'
-
+import { withRouter } from 'react-router-dom';
 class View extends React.Component {
     constructor(props) {  
         super(props);
@@ -35,8 +35,11 @@ class View extends React.Component {
             body: send
         }).then(res => res.json()).then(
             data => {
-                if(data.success) window.alert('验证成功，欢迎登录');
-                else window.alert('验证失败，用户名或密码错误')
+                if(data.code==200){
+                    window.alert('验证成功，欢迎登录');
+                    this.props.history.push('/main');
+                } 
+                if(data.code==401) window.alert('验证失败，用户名或密码错误')
             }
         )
     }
