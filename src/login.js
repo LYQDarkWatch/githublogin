@@ -5,7 +5,7 @@ class View extends React.Component {
     constructor(props) {  
         super(props);
         this.state = {
-            user:'',
+            username:'',
             password:'',
         }
         this.userChange = this.userChange.bind(this);
@@ -15,7 +15,7 @@ class View extends React.Component {
     }
 
     userChange(e){
-        this.setState({ user : e.target.value })
+        this.setState({ username : e.target.value })
     }
 
     passwordChange(e){
@@ -27,21 +27,25 @@ class View extends React.Component {
     }
 
     getConnect(){  //api请求函数
-        let text = {user:this.state.user,password:this.state.password} //获取数据
+        let storage = window.localStorage;
+        let text = {username:this.state.username,password:this.state.password} //获取数据
         let send = JSON.stringify(text);   //重要！将对象转换成json字符串
         fetch(`http://127.0.0.1:8080/login`,{   //Fetch方法
             method: 'POST',
-            headers: {'Content-Type': 'application/json; charset=utf-8'},
+            headers: {'Content-Type': 'text/plain'},
             body: send
         }).then(res => res.json()).then(
             data => {
-                if(data.code==200){
+                if(data.token){
                     window.alert('验证成功，欢迎登录');
                     this.props.history.push('/main');
+
                 } 
                 if(data.code==401) window.alert('验证失败，用户名或密码错误')
+                storage.token  = data.token;
+                console.log(storage.token);
             }
-        )
+        ).then()
     }
 
     render(){
@@ -50,7 +54,7 @@ class View extends React.Component {
             <Segment style={{textAlign:'center'}}>
                 <h2>请登录</h2>
                 <Input 
-                    id='user' 
+                    id='username' 
                     placeholder='用户名' 
                     style={{marginBottom:'10px'}}
                     onChange={this.userChange}
