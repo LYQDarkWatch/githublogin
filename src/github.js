@@ -21,13 +21,17 @@ class Main extends React.Component{
         }
     }
     getData=()=>{
+      
         // var api='https://api.github.com/search/repositories?q=stars:%3E=500&sort=stars&order=desc';
-        var api='http://127.0.0.1:8080/about'       
+        var api='http://127.0.0.1:8080/about' 
+        
         axios.get(api).then((response)=> {
             this.setState({
                 list:response.data.items
             })
             console.log(response)
+            console.log(sessionStorage.token)
+            console.log(sessionStorage.username)
         }).catch(function (error) {
             console.log(error);
         })
@@ -44,6 +48,14 @@ class Main extends React.Component{
         }
         
         return(
+            <div>
+            <div>
+            {
+            <div>
+                <h1>{sessionStorage.username}</h1>
+            </div>
+        }
+        </div>
             <div>
                     {
                         this.state.list.map( (value,key) =>{
@@ -69,11 +81,14 @@ class Main extends React.Component{
                         })
                     }
             </div>
+            </div>
         )
+        
     }
     componentDidMount() {
         this.getData();
     }
+
 }
 ReactDOM.render(
     <Main />,

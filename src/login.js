@@ -27,7 +27,7 @@ class View extends React.Component {
     }
 
     getConnect(){  //api请求函数
-        let storage = window.localStorage;
+        let storage = window.sessionStorage;
         let text = {username:this.state.username,password:this.state.password} //获取数据
         let send = JSON.stringify(text);   //重要！将对象转换成json字符串
         fetch(`http://127.0.0.1:8080/login`,{   //Fetch方法
@@ -39,11 +39,12 @@ class View extends React.Component {
                 if(data.token){
                     window.alert('验证成功，欢迎登录');
                     this.props.history.push('/main');
-
+                    storage.token  = data.token;
+                    storage.username = this.state.username
+                    console.log(storage.token);
                 } 
                 if(data.code==401) window.alert('验证失败，用户名或密码错误')
-                storage.token  = data.token;
-                console.log(storage.token);
+                
             }
         ).then()
     }
