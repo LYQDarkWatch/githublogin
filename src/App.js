@@ -9,10 +9,8 @@ class App extends React.Component {
 render(){
     return(
         <Router >
-            <div>
             <Route exact path="/" component={Login} />
             <Route path="/main" component={Git} />
-            </div>
         </Router>
         )
     }

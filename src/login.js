@@ -27,7 +27,7 @@ class View extends React.Component {
     }
 
     getConnect(){  //api请求函数
-        let storage = window.sessionStorage;
+        let storage = window.localStorage;
         let text = {username:this.state.username,password:this.state.password} //获取数据
         let send = JSON.stringify(text);   //重要！将对象转换成json字符串
         fetch(`http://127.0.0.1:8080/login`,{   //Fetch方法

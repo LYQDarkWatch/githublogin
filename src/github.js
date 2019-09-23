@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom'
 import './index.css';
+axios.defaults.headers.common['Authorization'] = localStorage.token;
 
 class Main extends React.Component{
     constructor(props){
@@ -20,23 +21,33 @@ class Main extends React.Component{
             ]
         }
     }
+
+
     getData=()=>{
-      
+        console.log(localStorage.token)
         // var api='https://api.github.com/search/repositories?q=stars:%3E=500&sort=stars&order=desc';
         var api='http://127.0.0.1:8080/about' 
         
         axios.get(api).then((response)=> {
+            console.log(response.code)
+            if(response.data.code == 400){
+                window.alert('验证失败，请重新登录');
+                this.props.history.push('/');
+            }
+            if(response.data.items){
             this.setState({
                 list:response.data.items
             })
             console.log(response)
-            console.log(sessionStorage.token)
-            console.log(sessionStorage.username)
-        }).catch(function (error) {
-            console.log(error);
+            console.log(localStorage.token)
+            console.log(localStorage.username)
+        }
+        
         })
     }
-
+    componentDidMount() {
+        this.getData();
+    }
     render() {
         const divstyle = {
             
@@ -52,7 +63,7 @@ class Main extends React.Component{
             <div>
             {
             <div>
-                <h1>{sessionStorage.username}</h1>
+                <h1>{localStorage.username}</h1>
             </div>
         }
         </div>
@@ -83,12 +94,7 @@ class Main extends React.Component{
             </div>
             </div>
         )
-        
     }
-    componentDidMount() {
-        this.getData();
-    }
-
 }
 ReactDOM.render(
     <Main />,
