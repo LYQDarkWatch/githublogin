@@ -1,8 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import ReactDOM from 'react-dom'
 import './index.css';
-axios.defaults.headers.common['Authorization'] = localStorage.token;
 
 class Main extends React.Component{
     constructor(props){
@@ -24,13 +22,14 @@ class Main extends React.Component{
 
 
     getData=()=>{
+        axios.defaults.headers.common['Authorization'] = localStorage.token;
         console.log(localStorage.token)
         // var api='https://api.github.com/search/repositories?q=stars:%3E=500&sort=stars&order=desc';
         var api='http://127.0.0.1:8080/about' 
         
         axios.get(api).then((response)=> {
             console.log(response.code)
-            if(response.data.code == 400){
+            if(response.data.code === 400){
                 window.alert('验证失败，请重新登录');
                 this.props.history.push('/');
             }
@@ -46,7 +45,12 @@ class Main extends React.Component{
         })
     }
     componentDidMount() {
-        this.getData();
+        this.getData()
+    }
+
+    logout = () =>{
+        localStorage.clear();
+        this.props.history.push('/')
     }
     render() {
         const divstyle = {
@@ -59,11 +63,12 @@ class Main extends React.Component{
         }
         
         return(
-            <div>
-            <div>
+            <div >
+            <div >
             {
-            <div>
-                <h1>{localStorage.username}</h1>
+            <div id='top'>
+                <h1 style={{float:'left'}}>当前用户：{localStorage.username}</h1>
+                <button style={{marginTop:'36px',marginLeft:'10px'}}onClick={this.logout}>退出登录</button>
             </div>
         }
         </div>
@@ -96,10 +101,5 @@ class Main extends React.Component{
         )
     }
 }
-ReactDOM.render(
-    <Main />,
-    document.getElementById('root')
-  );
-
 export default Main;
   
